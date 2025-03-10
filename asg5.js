@@ -136,7 +136,7 @@ function main() {
         const gltfLoader = new GLTFLoader();
         { // wood floor
             let floor;
-            gltfLoader.load('objects/WoodFloor.glb', function(gltf) {
+            gltfLoader.load('objects/woodFloor.glb', function(gltf) {
                 floor = gltf.scene;
                 floor.scale.set(0.4, 0.4, 0.4);
                 floor.position.set(1, -0.02, -0.5);
