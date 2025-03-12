@@ -62,8 +62,6 @@ function main() {
     plane.receiveShadow = true;
     scene.add(plane);
 
-    makeLight();
-
     function makeCamera() {
         const fov = 75;
         const aspect = window.innerWidth / window.innerHeight
@@ -77,44 +75,42 @@ function main() {
         controls.update();
     }
 
-    function makeLight() {
-        let color = 0xf3e8a0;
-        let intensity = 3;
-        const dirLight = new THREE.DirectionalLight(color, intensity);
-        dirLight.castShadow = true;
-        dirLight.position.set(1, 2, 3);
-        scene.add(dirLight);
+    
+    let color = 0xf3e8a0;
+    let intensity = 3;
+    const dirLight = new THREE.DirectionalLight(color, intensity);
+    dirLight.castShadow = true;
+    dirLight.position.set(1, 2, 3);
+    scene.add(dirLight);
 
-        const helper = new THREE.CameraHelper(dirLight.shadow.camera);
-        //scene.add(helper);
+    const helper = new THREE.CameraHelper(dirLight.shadow.camera);
+    //scene.add(helper);
 
-        color = 0xbf9888;
-        intensity = 1;
-        const ambLight = new THREE.AmbientLight(color, intensity);
-        scene.add(ambLight)
+    color = 0xbf9888;
+    intensity = 1;
+    const ambLight = new THREE.AmbientLight(color, intensity);
+    scene.add(ambLight)
 
-        const skyColor = 0xb1e1ff;
-        const groundColor = 0xb97a20;
-        const hemisphereLight = new THREE.HemisphereLight(skyColor, groundColor, intensity);
-        scene.add(hemisphereLight);
+    const skyColor = 0xb1e1ff;
+    const groundColor = 0xb97a20;
+    const hemisphereLight = new THREE.HemisphereLight(skyColor, groundColor, intensity);
+    scene.add(hemisphereLight);
 
-        // lamp light
-        const pointLight = new THREE.PointLight(0xfff5b8, 2);
-        pointLight.position.set(0.5, 1.55, 0.0);
-        scene.add(pointLight);
+    // lamp light
+    const pointLight = new THREE.PointLight(0xfff5b8, 2);
+    pointLight.position.set(0.5, 1.55, 0.0);
+    scene.add(pointLight);
 
-        const gui = new GUI();
-        const lightColor = gui.addFolder('Light Color');
-        lightColor.addColor(new ColorGUIHelper(dirLight, 'color'), 'value').name('Directional Light Color');
-        lightColor.add(dirLight, 'intensity', 0, 5, 0.01).name('Directional Light Intensity');
-        lightColor.addColor(new ColorGUIHelper(ambLight, 'color'), 'value').name('Ambient Light Color');
-        lightColor.add(ambLight, 'intensity', 0, 5, 0.01).name('Ambient Light Intensity');
-        lightColor.addColor(new ColorGUIHelper(hemisphereLight, 'color'), 'value').name('Hemisphere Light Color(sky)');
-        lightColor.addColor(new ColorGUIHelper(hemisphereLight, 'groundColor'), 'value').name('Hemisphere Light Color(ground)');
-    }
-
-    const gui1 = new GUI();
-    const checkBox = gui1.add(fogOn, 'bool').name('Fog');
+    const gui = new GUI();
+    const lightColor = gui.addFolder('Light Color');
+    lightColor.addColor(new ColorGUIHelper(dirLight, 'color'), 'value').name('Directional Light Color');
+    lightColor.add(dirLight, 'intensity', 0, 5, 0.01).name('Directional Light Intensity');
+    lightColor.addColor(new ColorGUIHelper(ambLight, 'color'), 'value').name('Ambient Light Color');
+    lightColor.add(ambLight, 'intensity', 0, 5, 0.01).name('Ambient Light Intensity');
+    lightColor.addColor(new ColorGUIHelper(hemisphereLight, 'color'), 'value').name('Hemisphere Light Color(sky)');
+    lightColor.addColor(new ColorGUIHelper(hemisphereLight, 'groundColor'), 'value').name('Hemisphere Light Color(ground)');
+    
+    const checkBox = gui.add(fogOn, 'bool').name('Fog');
     checkBox.onChange((value) => {
         if(value) {
             scene.fog.far = 8;
@@ -228,7 +224,7 @@ function main() {
     const option = {
         wireframe: false
     }
-    const checkBox1 = gui1.add(option, 'wireframe').name('Wireframe');
+    const checkBox1 = gui.add(option, 'wireframe').name('Wireframe');
     checkBox1.onChange(() => {
         boxMaterial.wireframe = option.wireframe;
         diamondMaterial.wireframe = option.wireframe;
