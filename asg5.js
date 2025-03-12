@@ -11,7 +11,6 @@ import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 // Normal Wall by Quaternius via Poly Pizza
 // Desk by dook [CC-BY] via Poly Pizza
 // Simple soccer football by Smirnoff Alexander [CC-BY] via Poly Pizza
-// Couch Medium by Quaternius
 // Wooden Wall by Quaternius
 // Oriental rug by jeremy [CC-BY] via Poly Pizza
 // Chick by Poly by Google [CC-BY] via Poly Pizza
@@ -83,9 +82,6 @@ function main() {
     dirLight.position.set(1, 2, 3);
     scene.add(dirLight);
 
-    const helper = new THREE.CameraHelper(dirLight.shadow.camera);
-    //scene.add(helper);
-
     color = 0xbf9888;
     intensity = 1;
     const ambLight = new THREE.AmbientLight(color, intensity);
@@ -135,9 +131,50 @@ function main() {
     cube.position.set(1, 0.13, 1);
     scene.add(cube);
 
-    // Lamp
+    let sofaW = 10, sofaH = 1, sofaD = 5;
+    const sofaGeometry = new THREE.BoxGeometry(sofaW, sofaH, sofaD);
+    const sofaBaseMaterial = new THREE.MeshPhongMaterial({
+        wireframe: false,
+        color: 0x604d3d
+    })
+    const sofaMaterial = new THREE.MeshPhongMaterial({
+        wireframe: false,
+        color: 0x4a663f
+    });
+    let sofaBase = new THREE.Mesh(sofaGeometry, sofaBaseMaterial);
+    sofaBase.scale.set(0.15, 0.10, 0.15);
+    sofaBase.rotation.y = Math.PI/2;
+    sofaBase.position.set(-1, 0.2, 0.65);
+    scene.add(sofaBase);
+    let sofa = new THREE.Mesh(sofaGeometry, sofaMaterial);
+    sofa.castShadow = true;
+    sofa.receiveShadow = true;
+    sofa.scale.set(0.15, 0.10, 0.15);
+    sofa.rotation.y = Math.PI/2;
+    sofa.position.set(-1, 0.3, 0.65);
+    scene.add(sofa);
+    let sofaBack = sofa.clone();
+    sofaBack.scale.set(0.15, 0.3, 0.03);
+    sofaBack.position.set(-1.27, 0.57, 0.65);
+    scene.add(sofaBack);
+    let armRest1 = sofa.clone();
+    armRest1.scale.set(0.02, 0.22, 0.15);
+    armRest1.position.set(-1, 0.45, 1.3);
+    scene.add(armRest1);
+    let armRest2 = armRest1.clone();
+    armRest2.position.set(-1, 0.45, 0);
+    scene.add(armRest2);
+    let sofa1 = sofa.clone();
+    sofa1.scale.set(0.07, 0.08, 0.15);
+    sofa1.position.set(-1, 0.38, 1);
+    scene.add(sofa1);
+    let sofa2 = sofa1.clone();
+    sofa2.position.set(-1, 0.38, 0.35);
+    scene.add(sofa2);
+
+
     const cylinderGeometry = new THREE.CylinderGeometry(1.0, 1.0, 8, 10);
-    const cylinderMaterial = new THREE.MeshPhongMaterial( {
+    let cylinderMaterial = new THREE.MeshPhongMaterial( {
         wireframe: false,
         color: 0x473b29
     });
@@ -147,6 +184,22 @@ function main() {
     cylinder.scale.set(0.02, 0.02, 0.02);
     cylinder.position.set(0.5, 2.15, 0.0);
     scene.add(cylinder);
+    cylinderMaterial.color.setHex(0x604d3d);
+    let sofaLeg = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+    sofaLeg.castShadow = true;
+    sofaLeg.receiveShadow = true;
+    sofaLeg.scale.set(0.03, 0.03, 0.03);
+    sofaLeg.position.set(-1.22, 0.1, 1.35);
+    scene.add(sofaLeg);
+    let sofaLeg1 = sofaLeg.clone();
+    sofaLeg1.position.set(-0.68, 0.1, 1.35);
+    scene.add(sofaLeg1);
+    let sofaLeg2 = sofaLeg.clone();
+    sofaLeg2.position.set(-1.22, 0.1, 0);
+    scene.add(sofaLeg2);
+    let sofaLeg3 = sofaLeg.clone();
+    sofaLeg3.position.set(-0.68, 0.1, 0);
+    scene.add(sofaLeg3);
 
     const coneGeometry = new THREE.ConeGeometry(6, 7, 16);
     const coneMaterial = new THREE.MeshPhongMaterial( {
@@ -159,6 +212,18 @@ function main() {
     cone.scale.set(0.04, 0.04, 0.04);
     cone.position.set(0.5, 2.0, 0.0);
     scene.add(cone);
+    const toyGeometry = new THREE.DodecahedronGeometry(2.5);
+    const toy = new THREE.Mesh(toyGeometry, coneMaterial);
+    toy.castShadow = true;
+    toy.receiveShadow = true;
+    toy.scale.set(0.05, 0.05, 0.05);
+    toy.position.set(2.6, 0.15, 1.15);
+    scene.add(toy);
+    let cone1 = cone.clone();
+    cone1.material.color.setHex(0xe7e7e7);
+    cone1.scale.set(0.015, 0.035, 0.015);
+    cone1.position.set(2.8, 0.15, 1.18);
+    scene.add(cone1);
 
     const sphereGeometry = new THREE.SphereGeometry(1.1, 15, 15);
     const sphereMaterial = new THREE.MeshPhongMaterial( {
@@ -231,9 +296,9 @@ function main() {
         sphereMaterial.wireframe = option.wireframe;
         cylinderMaterial.wireframe = option.wireframe;
         coneMaterial.wireframe = option.wireframe;
+        sofaMaterial.wireframe = option.wireframe;
+        sofaBaseMaterial.wireframe = option.wireframe;
     });
-
-
 
     {
         const loader = new THREE.TextureLoader();
@@ -394,11 +459,9 @@ function main() {
                         obj.receiveShadow = true;
                     }
                 });
-                // toyTrain.scale.set(0.2, 0.2, 0.2);
                 toyTrain.position.set(2.5, 0.07, 1.0);
                 scene.add(toyTrain);
             });
-
         }
 
         { // soccer ball
@@ -432,23 +495,6 @@ function main() {
                 scene.add(tennisBall);
             });
 
-        }
-
-        { // couch
-            let couch;
-            gltfLoader.load('objects/couch.glb', function(gltf) {
-                couch = gltf.scene;
-                couch.traverse(function(obj) {
-                    if(obj.isMesh) {
-                        obj.castShadow = true;
-                        obj.receiveShadow = true;
-                    }
-                });
-                couch.scale.set(0.3, 0.3, 0.3);
-                couch.rotation.y = Math.PI/2;
-                couch.position.set(-0.8, 0.0, 0.7);
-                scene.add(couch);
-            });
         }
 
         { // wooden Wall
