@@ -369,7 +369,7 @@ function main() {
 
         { // plant
             let plant;
-            gltfLoader.load('objects/fiddle-leaf Plant.glb', function(gltf) {
+            gltfLoader.load('objects/pottedPlant.glb', function(gltf) {
                 gltf.scene.traverse(function(obj) {
                     if(obj.isMesh) {
                         obj.castShadow = true;
