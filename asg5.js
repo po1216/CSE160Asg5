@@ -123,63 +123,64 @@ function main() {
         }
     })
 
-    function addCube() {
-        const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-        const loader = new THREE.TextureLoader();
-        const texture = loader.load('textures/rbx.png');
-        texture.colorSpace = THREE.SRGBColorSpace;
-        const boxMaterial = new THREE.MeshPhongMaterial({
-            map: texture
-        });
-        const cube = new THREE.Mesh(boxGeometry, boxMaterial);
-        cube.castShadow = true;
-        cube.receiveShadow = true;
-        cube.scale.set(0.2, 0.2, 0.2);
-        cube.position.set(1, 0.13, 1);
-        scene.add(cube);
-    }
+    // Rubik's cube
+    const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+    const loader = new THREE.TextureLoader();
+    const texture = loader.load('textures/rbx.png');
+    texture.colorSpace = THREE.SRGBColorSpace;
+    const boxMaterial = new THREE.MeshPhongMaterial({
+        wireframe: false,
+        map: texture
+    });
+    const cube = new THREE.Mesh(boxGeometry, boxMaterial);
+    cube.castShadow = true;
+    cube.receiveShadow = true;
+    cube.scale.set(0.2, 0.2, 0.2);
+    cube.position.set(1, 0.13, 1);
+    scene.add(cube);
 
-    function addLamp() {
-        const cylinderGeometry = new THREE.CylinderGeometry(1.0, 1.0, 8, 10);
-        const cylinderMaterial = new THREE.MeshPhongMaterial( {
-            color: 0x473b29
-        });
-        const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
-        cylinder.castShadow = true;
-        cylinder.receiveShadow = true;
-        cylinder.scale.set(0.02, 0.02, 0.02);
-        cylinder.position.set(0.5, 2.15, 0.0);
-        scene.add(cylinder);
+    // Lamp
+    const cylinderGeometry = new THREE.CylinderGeometry(1.0, 1.0, 8, 10);
+    const cylinderMaterial = new THREE.MeshPhongMaterial( {
+        wireframe: false,
+        color: 0x473b29
+    });
+    const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+    cylinder.castShadow = true;
+    cylinder.receiveShadow = true;
+    cylinder.scale.set(0.02, 0.02, 0.02);
+    cylinder.position.set(0.5, 2.15, 0.0);
+    scene.add(cylinder);
 
-        const coneGeometry = new THREE.ConeGeometry(6, 7, 16);
-        const coneMaterial = new THREE.MeshPhongMaterial( {
-            color: 0x473b29
-        });
-        const cone = new THREE.Mesh(coneGeometry, coneMaterial);
-        cone.castShadow = true;
-        cone.receiveShadow = true;
-        cone.scale.set(0.04, 0.04, 0.04);
-        cone.position.set(0.5, 2.0, 0.0);
-        scene.add(cone);
+    const coneGeometry = new THREE.ConeGeometry(6, 7, 16);
+    const coneMaterial = new THREE.MeshPhongMaterial( {
+        wireframe: false,
+        color: 0x473b29
+    });
+    const cone = new THREE.Mesh(coneGeometry, coneMaterial);
+    cone.castShadow = true;
+    cone.receiveShadow = true;
+    cone.scale.set(0.04, 0.04, 0.04);
+    cone.position.set(0.5, 2.0, 0.0);
+    scene.add(cone);
 
-        const sphereGeometry = new THREE.SphereGeometry(1.1, 15, 15);
-        const sphereMaterial = new THREE.MeshPhongMaterial( {
-            color: 0xf3e8a0
-        });
-        const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-        sphere.scale.set(0.1, 0.1, 0.1);
-        sphere.position.set(0.5, 1.87, 0.0);
-        scene.add(sphere);
-    }
+    const sphereGeometry = new THREE.SphereGeometry(1.1, 15, 15);
+    const sphereMaterial = new THREE.MeshPhongMaterial( {
+        wireframe: false,
+        color: 0xf3e8a0
+    });
+    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    sphere.scale.set(0.1, 0.1, 0.1);
+    sphere.position.set(0.5, 1.87, 0.0);
+    scene.add(sphere);
 
-    addCube();
-    addLamp();
     const diamondGeometry = new THREE.OctahedronGeometry();
     const diamondMaterial = new THREE.MeshPhongMaterial( {
         color: 0x0cd52d,
         transparent: true,
         opacity: 0.8,
-        specular: 0xffffff
+        specular: 0xffffff,
+        wireframe: false,
     });
     const diamond = new THREE.Mesh(diamondGeometry, diamondMaterial);
     diamond.scale.set(0.1, 0.2, 0.1);
@@ -196,10 +197,7 @@ function main() {
     const rtFar = 5;
     const rtCamera = new THREE.PerspectiveCamera(rtFov, rtAspect, rtNear, rtFar);
     rtCamera.position.set(0.15, 0.5, 2);
-    // const controls1 = new OrbitControls(rtCamera, canvas);
-    // controls1.target.set(0, 0, 0);
-    // controls1.update();
- 
+
     const rtScene = new THREE.Scene();
     rtScene.background = new THREE.Color('white');
     let diamond1 = diamond.clone();
@@ -214,28 +212,6 @@ function main() {
         light.position.set(-1, 2, 4);
         rtScene.add(light);
       }
-       
-      const boxWidth = 1;
-      const boxHeight = 1;
-      const boxDepth = 1;
-      const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-       
-      function makeInstance(geometry, color, x) {
-        const material = new THREE.MeshPhongMaterial({color});
-       
-        const cube = new THREE.Mesh(geometry, material);
-        rtScene.add(cube);
-       
-        cube.position.x = x;
-       
-        return cube;
-      }
-       
-    //   const rtCubes = [
-    //     makeInstance(geometry, 0x44aa88,  0),
-    //     makeInstance(geometry, 0x8844aa, -2),
-    //     makeInstance(geometry, 0xaa8844,  2),
-    //   ];
 
     const planeGeometry1 = new THREE.PlaneGeometry(5, 5);
     const planeMaterial1 = new THREE.MeshPhongMaterial( {
@@ -248,6 +224,19 @@ function main() {
     plane1.scale.set(0.25, 0.17, 0.17)
     plane1.position.set(2.5, 1.1, -1.23);
     scene.add(plane1);
+
+    const option = {
+        wireframe: false
+    }
+    const checkBox1 = gui1.add(option, 'wireframe').name('Wireframe');
+    checkBox1.onChange(() => {
+        boxMaterial.wireframe = option.wireframe;
+        diamondMaterial.wireframe = option.wireframe;
+        sphereMaterial.wireframe = option.wireframe;
+        cylinderMaterial.wireframe = option.wireframe;
+        coneMaterial.wireframe = option.wireframe;
+    });
+
 
 
     {
